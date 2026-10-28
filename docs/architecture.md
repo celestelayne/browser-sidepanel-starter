@@ -13,10 +13,10 @@ WXT, React, TypeScript, Chrome Manifest V3. Dexie (IndexedDB) and Zod are instal
 | Context | Entry point | Owns | Must not |
 | :--- | :--- | :--- | :--- |
 | Side panel | `entrypoints/sidepanel/` | Interactive UI, input, presentation state; may use local persistence from the extension origin | Assume React state survives panel closure |
-| Content script | `entrypoints/content.ts` | Bounded, permitted reads of webpages; sends structured data | Pass raw page HTML, collect unrelated browsing data, trust page content |
+| Content script (not yet present) | `entrypoints/content.ts` | Bounded, permitted reads of webpages; sends structured data | Pass raw page HTML, collect unrelated browsing data, trust page content |
 | Background service worker | `entrypoints/background.ts` | Browser events, toolbar action, cross-context coordination | Act as a long-running server or sole owner of durable state; it can be suspended at any time |
 
-Today the background script sets `openPanelOnActionClick` so the toolbar icon opens the panel. The content script is a template stub with a placeholder `matches` pattern, to be replaced by the first slice that needs page access.
+Today the background script sets `openPanelOnActionClick` so the toolbar icon opens the panel. There is no content script yet; the first slice that needs page access adds one with a narrow `matches` pattern.
 
 ## Code layout
 

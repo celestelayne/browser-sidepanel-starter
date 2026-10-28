@@ -4,7 +4,7 @@ A reusable Chrome browser-extension starter built with WXT, React, TypeScript, a
 
 Build browser side-panel applications through small, testable vertical slices using an explicit plan → approve → implement → review workflow.
 
-> Project status: In development. The first milestone is a working React side panel that opens from the Chrome extension toolbar.
+> Project status: Usable starter. Clicking the toolbar icon opens a minimal React side panel (header, main region, footer). It contains no product features; add them one slice at a time.
 
 ## Overview
 Browser Side Panel Starter provides a foundation for building applications that remain accessible alongside the websites people visit.
@@ -31,7 +31,7 @@ The starter is intended to be reusable across different browser-extension produc
 
 ### 1. Create your repository
 
-Use Use this template on GitHub to create a new repository.
+Click **Use this template** on GitHub to create a new repository.
 
 Alternatively, clone this repository:
 
@@ -53,7 +53,7 @@ npm install
 npm run dev
 ```
 
-WXT generates the development extension in its output directory.
+WXT builds the development extension to `.output/chrome-mv3-dev` and may launch a browser with it loaded.
 
 Follow WXT's development instructions to load the extension into Chrome, or use the browser-launch behavior configured by your project.
 
@@ -62,14 +62,14 @@ For manual loading:
 - Open chrome://extensions.
 - Enable Developer mode.
 - Select Load unpacked.
-- Select the generated Chrome extension directory.
+- Select `.output/chrome-mv3-dev` (or `.output/chrome-mv3` after `npm run build`).
 - Pin the extension to the toolbar.
 
 ### 4. Open the side panel
 
 Click the extension's toolbar icon.
 
-Once the open-sidepanel slice is implemented, this action should open the React interface alongside the current webpage.
+The side panel opens alongside the current webpage and shows the starter shell.
 
 If it does not open, inspect the generated manifest, the sidePanel permission, and the extension service-worker console.
 
@@ -81,6 +81,22 @@ npm run build
 
 Check the WXT build output and generated manifest before packaging or distributing the extension.
 
+The starter requests only the `sidePanel` permission and ships no content script or host access. When a slice needs to read a webpage, add `entrypoints/content.ts` with a narrow `matches` pattern and document the host access in that slice's spec.
+
+## Checks
+
+| Command | Purpose |
+| :--- | :--- |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript, no emit |
+| `npm run test` / `npm run test:ci` | Vitest unit tests (watch / one-shot) |
+| `npm run build` then `npm run test:e2e` | Playwright smoke tests against the built extension in `.output/chrome-mv3` |
+| `npm run validate:slices` | Check the structure of `docs/slices/*` |
+
+The end-to-end tests load the built extension in Chromium, so run `npm run build` first. On a new machine, install the browser once with `npx playwright install chromium`.
+
+The e2e tests open the built `sidepanel.html` in a tab. They do not verify that the toolbar click opens the real side panel; check that manually in Chrome.
+
 ## AI-assisted development workflow
 
 The project uses three Claude Code skills.
@@ -91,33 +107,35 @@ The project uses three Claude Code skills.
 | /implement-slice | Implement an approved slice and run verification |
 | /review-slice | Review the implementation against requirements and engineering standards |
 
-### Example: building the first slice
+The skills live in `.claude/skills/`. If Claude Code does not list them, restart it.
+
+### Example: building your first slice
 
 Start Claude Code in the repository:
 ```
 claude
 ```
-Plan the first slice:
+Plan a slice, replacing `<slice-name>` with a short kebab-case name for your feature:
 ```
-/create-slice open-sidepanel
+/create-slice <slice-name>
 ```
 Review the generated files:
 ```
-docs/slices/open-sidepanel/
+docs/slices/<slice-name>/
   intent.md
   spec.md
   plan.md
 ```
-Approve the specification and plan before implementation.
+Approve the specification and plan before implementation by marking each `Status:` line `Approved by <name> on YYYY-MM-DD`, then run `npm run validate:slices`.
 
 Then run:
 ```
-/implement-slice open-sidepanel
+/implement-slice <slice-name>
 ```
 After implementation and testing:
 
 ```
-/review-slice open-sidepanel
+/review-slice <slice-name>
 ```
 
 Resolve any blocking findings, review the result, and merge through the project's normal GitHub workflow.
@@ -130,6 +148,7 @@ See `AGENTS.md` for the full operating rules.
 - [Agent instructions](./AGENTS.md)
 - [Product definition](./docs/product.md)
 - [Architecture](./docs/architecture.md)
+- [Frontend conventions](./docs/conventions/frontend.md)
 - [Slice specifications](./docs/slices)
 
 ## References
@@ -141,4 +160,4 @@ See `AGENTS.md` for the full operating rules.
 - [Playwright Chrome extension testing](https://playwright.dev/docs/chrome-extensions)
 
 ## License
-License to be determined before public release.
+[MIT](./LICENSE)

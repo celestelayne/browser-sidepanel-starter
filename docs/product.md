@@ -13,7 +13,7 @@ Developers starting a Manifest V3 extension whose main interface lives in Chrome
 ## What the starter provides
 
 - A React + TypeScript side panel opened from the extension's toolbar icon
-- WXT-managed Manifest V3 entry points: background service worker, content script, side panel
+- WXT-managed Manifest V3 entry points: background service worker and side panel (a content script is added by the first slice that needs page access)
 - Folder conventions that keep UI, page access, coordination, and persistence separate
 - Test tooling for unit and extension-level end-to-end checks
 - A slice workflow: `/create-slice`, then human approval, `/implement-slice`, `/review-slice`, then human acceptance

@@ -215,7 +215,7 @@ The extension consists of distinct execution contexts with different responsibil
 - Treat page content as untrusted.
 - Extract structured data rather than passing arbitrary page HTML when possible.
 - Do not collect unrelated browsing data.
-- Do not assume every ecommerce website exposes the same product structure.
+- Do not assume every website exposes the same page structure.
 
 #### Background service worker
 - Handles browser events, toolbar actions, and cross-context coordination.
@@ -244,7 +244,7 @@ The extension consists of distinct execution contexts with different responsibil
 - Prefer user-initiated actions and narrowly scoped page access.
 - Document every added browser permission and host-access requirement.
 - Do not introduce broad browsing surveillance.
-- Do not transmit style profiles, browsing history, or product information to remote services without explicit authorization.
+- Do not transmit user data, browsing history, or page content to remote services without explicit authorization.
 
 ### Frontend and accessibility
 - Design for a narrow, resizable browser side panel.
@@ -257,9 +257,9 @@ The extension consists of distinct execution contexts with different responsibil
 ### AI-assisted behavior
 AI is optional and must be introduced only through an approved slice.
 When used:
-- Distinguish extracted facts from inferred product attributes.
+- Distinguish extracted facts from inferred attributes.
 - Present recommendations as suggestions, not verified truths.
-- Allow users to correct product information.
+- Allow users to correct extracted or inferred information.
 - Require explicit approval before changing persistent preferences or performing external actions.
 - Provide a deterministic fallback when AI is unavailable.
 - Do not send personal data to an AI provider without an approved privacy and data-flow design.
@@ -269,7 +269,7 @@ When used:
 - Add a library only when a specific problem justifies it and approval is obtained.
 - Do not introduce authentication, cloud synchronization, backend services, or background jobs before an approved requirement needs them.
 - Do not implement future product domains or features speculatively.
-- Keep the starter reusable and separate from Style Companion-specific business logic.
+- Keep the starter reusable and free of product-specific business logic.
 
 ## Verifying your work
 
@@ -279,14 +279,14 @@ Before declaring that a slice is done:
 2. Load the built extension in Chromium and inspect the changed interface in the actual side panel. Test narrow (approximately 320px) and wider panel widths, including long content, overflow, and resizing.
 3. Verify keyboard navigation, visible focus, accessible labels, and focus behavior when opening, closing, or changing panel views.
 4. Walk through every item in the slice's spec.md → "Done means" and explain how it was verified.
-5. Test relevant edge cases: missing product data, unsupported webpages, invalid form input, malformed messages, denied permissions, duplicate saves, and IndexedDB write failures.
+5. Test relevant edge cases: missing or malformed page data, unsupported webpages, invalid form input, malformed messages, denied permissions, duplicate saves, and IndexedDB write failures.
 6. Verify extension lifecycle behavior relevant to the slice: panel close/reopen, tab changes, page navigation, extension reload, and service-worker suspension or restart. Do not assume the background worker remains active.
-7. Check that previously implemented workflows still behave correctly, including style-profile editing, product detection, saving, and evaluation where applicable.
+7. Check that workflows from previously implemented slices still behave correctly.
 8. Inspect generated Manifest V3 permissions and entry points. Confirm that no unapproved host permissions, content scripts, or remote data transmissions were introduced.
 9. For persistence-related slices, verify committed data survives panel reopening and browser restart using the same browser profile. Test schema upgrades and recovery behavior when applicable.
 10. Report checks that could not be run, why they could not run, and what remains unverified.
 
-Use deterministic local storefront fixtures for automated product-extraction tests. Do not rely on live ecommerce websites as the sole test environment.
+Use deterministic local page fixtures for automated page-extraction tests. Do not rely on live websites as the sole test environment.
 
 ## Never
 
@@ -300,9 +300,9 @@ Use deterministic local storefront fixtures for automated product-extraction tes
 - Inject untrusted webpage content into the React UI as raw HTML.
 - Assume the Manifest V3 background service worker stays alive between events.
 - Store durable user records only in React state, background-worker memory, or localStorage when the approved data model requires IndexedDB.
-- Delete, reset, or overwrite persisted style profiles or saved products to make a test pass.
-- Silently modify user-authored style preferences based on extracted data or AI inferences.
-- Report a product as saved before the persistence operation succeeds.
+- Delete, reset, or overwrite persisted user records to make a test pass.
+- Silently modify user-authored preferences based on extracted data or AI inferences.
+- Report a record as saved before the persistence operation succeeds.
 - Skip an IndexedDB schema version or destructively change existing records without an approved migration and tests.
 - Introduce a global state library when React state and the existing persistence layer are sufficient.
 - Implement a future slice before approval.
