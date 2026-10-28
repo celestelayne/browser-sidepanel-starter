@@ -1,6 +1,6 @@
 {
-  "name": "wxt-react-starter",
-  "description": "manifest.json description",
+  "name": "browser-sidepanel-starter",
+  "description": "Reusable Chrome side-panel extension starter",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,7 +12,13 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "test:e2e": "playwright test",
+    "validate:slices": "node scripts/validate-slices.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.7",

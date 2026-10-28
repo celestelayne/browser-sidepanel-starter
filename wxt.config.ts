@@ -4,7 +4,8 @@ import { defineConfig } from 'wxt';
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    name: 'Style Companion',
+    name: 'Browser Side Panel Starter',
+    description: 'A side panel that stays open alongside the pages you browse.',
     permissions: ['sidePanel'],
   }
 });
