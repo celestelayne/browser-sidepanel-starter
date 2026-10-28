@@ -1,7 +1,7 @@
 # Chrome Browser Sidepanel Starter
 
 A reusable Chrome browser-extension starter built with WXT, React, TypeScript, and Manifest V3, designed for incremental product development with Claude Code.
-
+![Chrome Browser Side-Panel](public/assets/chrome-browser-sidepanel.png)
 Build browser side-panel applications through small, testable vertical slices using an explicit plan → approve → implement → review workflow.
 
 > Project status: Usable starter. Clicking the toolbar icon opens a minimal React side panel (header, main region, footer). It contains no product features; add them one slice at a time.
