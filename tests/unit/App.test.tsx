@@ -3,22 +3,35 @@ import { describe, expect, it } from 'vitest';
 import App from '../../entrypoints/sidepanel/App';
 
 describe('side panel shell', () => {
-  const html = renderToStaticMarkup(<App />);
+  const html = renderToStaticMarkup(<App version="1.2.3" />);
 
-  it('renders the title in a single h1 inside the header', () => {
-    expect(html).toMatch(/<header[^>]*>\s*<h1>Browser Side Panel Starter<\/h1>/);
+  it('renders a single h1 in the main region', () => {
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1);
+    expect(html).toMatch(/<main[^>]*>[\s\S]*<h1[^>]*>Welcome<\/h1>[\s\S]*<\/main>/);
+    expect(html).toContain('Your side panel is ready.');
   });
 
-  it('renders the placeholder in the main region', () => {
-    expect(html).toMatch(/<main[^>]*>[\s\S]*Your side panel is ready\.[\s\S]*<\/main>/);
+  it('renders the three quick start steps in order', () => {
+    const list = html.match(/<ol[^>]*>[\s\S]*<\/ol>/)?.[0] ?? '';
+    expect(list.match(/<li[\s>]/g)).toHaveLength(3);
+    expect(list.indexOf('Create a slice')).toBeLessThan(list.indexOf('Implement'));
+    expect(list.indexOf('Implement')).toBeLessThan(list.indexOf('Review'));
   });
 
-  it('renders the footer region', () => {
-    expect(html).toMatch(/<footer[^>]*>[\s\S]*Made with 💛 in NYC[\s\S]*<\/footer>/);
+  it('renders the next step with the create-slice command', () => {
+    expect(html).toMatch(/Next step[\s\S]*<code>\/create-slice &lt;slice-name&gt;<\/code>/);
   });
 
-  it('contains no interactive elements', () => {
-    expect(html).not.toMatch(/<(a|button|input|select|textarea)[\s>]/);
+  it('shows the version passed in the footer', () => {
+    expect(html).toMatch(/<footer[^>]*>[\s\S]*v1\.2\.3[\s\S]*<\/footer>/);
+  });
+
+  it('has one button and no links or form fields', () => {
+    expect(html.match(/<button[\s>]/g)).toHaveLength(1);
+    expect(html).not.toMatch(/<(a|input|select|textarea)[\s>]/);
+  });
+
+  it('starts with an empty copy status', () => {
+    expect(html).toMatch(/<p class="copy-status" role="status"><\/p>/);
   });
 });

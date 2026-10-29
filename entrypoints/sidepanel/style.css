@@ -5,6 +5,13 @@
   --muted: #5f6c7b;
   --border: #d9dee5;
   --focus: #1a5fd0;
+  --accent: #0b57d0;
+  --accent-fg: #ffffff;
+  --card-bg: #eef3fd;
+  --step-bg: #e6e9ee;
+  --callout-bg: #e6f4ea;
+  --callout-fg: #0d652d;
+  --code-bg: rgba(0, 0, 0, 0.07);
 
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
@@ -18,6 +25,13 @@
     --muted: #a0aab5;
     --border: #353c45;
     --focus: #6ea8fe;
+    --accent: #8ab4f8;
+    --accent-fg: #062e6f;
+    --card-bg: #232a36;
+    --step-bg: #353c45;
+    --callout-bg: #1e3a2a;
+    --callout-fg: #81c995;
+    --code-bg: rgba(255, 255, 255, 0.12);
   }
 }
 
@@ -39,38 +53,161 @@ body {
   min-height: 100vh;
 }
 
-.panel-header,
-.panel-main,
-.panel-footer {
-  padding: 0.75rem 1rem;
-  overflow-wrap: anywhere;
-}
-
-.panel-header {
-  border-bottom: 1px solid var(--border);
-}
-
-.panel-header h1 {
+h1,
+h2,
+p {
   margin: 0;
-  font-size: 1.125rem;
+}
+
+h1 {
+  font-size: 1.25rem;
   line-height: 1.3;
+}
+
+h2 {
+  font-size: 1.0625rem;
+  line-height: 1.3;
+}
+
+code {
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+  background: var(--code-bg);
+  font-size: 0.875em;
 }
 
 .panel-main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  overflow-wrap: anywhere;
 }
 
-.panel-main > :first-child,
-.panel-footer > :first-child {
-  margin-top: 0;
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--card-bg);
 }
 
-.panel-main > :last-child,
-.panel-footer > :last-child {
-  margin-bottom: 0;
+.button-primary {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button-primary:hover {
+  filter: brightness(1.08);
+}
+
+.copy-status {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.copy-status:empty {
+  display: none;
+}
+
+.steps {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  column-gap: 0.75rem;
+  padding-bottom: 1rem;
+  counter-increment: step;
+}
+
+.steps li:last-child {
+  padding-bottom: 0;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--step-bg);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.steps li:first-child::before {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+.steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 2.25rem;
+  bottom: 0.25rem;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--border);
+}
+
+.steps li > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.steps li span {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.callout {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--callout-bg);
+  color: var(--callout-fg);
+}
+
+.callout p {
+  margin-top: 0.25rem;
+  color: var(--fg);
+}
+
+.callout-icon {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .panel-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 1rem;
+  padding: 0.75rem 0;
   border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 0.875rem;
